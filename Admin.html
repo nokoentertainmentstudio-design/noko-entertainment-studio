@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Noko Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#FFD700;--gold2:#FFA500;--black:#070707;--black2:#111;
+  --white:#FFFFFF;--grey:#1a1a1a;--muted:#888;
+  --gb:rgba(255,215,0,0.18);--red:#ff4444;--green:#44dd88;--t:all 0.3s ease;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--black);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+/* LOGIN */
+#ls{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--black);z-index:9999;}
+.lb{width:440px;padding:54px 44px;border:1px solid var(--gb);background:var(--grey);text-align:center;}
+.ll{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:10px;color:var(--gold);text-shadow:0 0 40px rgba(255,215,0,0.25);}
+.lsub{font-size:10px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin:6px 0 38px;}
+.lf{width:100%;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,215,0,0.15);color:var(--white);font-family:'Barlow',sans-serif;font-size:14px;margin-bottom:14px;outline:none;transition:var(--t);display:block;}
+.lf:focus{border-color:var(--gold);background:rgba(255,215,0,0.04);}
+.lf::placeholder{color:rgba(255,255,255,0.18);}
+.lbtn{width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;cursor:pointer;transition:var(--t);}
+.lbtn:hover{background:var(--white);}
+.lerr{color:#ff8888;font-size:12px;letter-spacing:1px;margin-top:14px;display:none;padding:10px;border:1px solid rgba(255,77,77,0.2);background:rgba(255,77,77,0.05);}
+
+/* APP */
+#app{display:none;min-height:100vh;}
+.sb{position:fixed;left:0;top:0;width:260px;height:100vh;background:var(--grey);border-right:1px solid var(--gb);display:flex;flex-direction:column;z-index:100;overflow-y:auto;}
+.sbt{padding:28px 24px 22px;border-bottom:1px solid var(--gb);}
+.sbl{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:5px;color:var(--gold);}
+.sbsub{font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:5px;display:flex;align-items:center;gap:7px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--green);}50%{box-shadow:0 0 16px var(--green),0 0 24px rgba(68,221,136,0.3);}}
+.sbn{flex:1;padding:14px 0;}
+.ni{display:flex;align-items:center;gap:13px;padding:13px 24px;cursor:pointer;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;border-left:3px solid transparent;background:none;width:100%;text-align:left;transition:var(--t);user-select:none;}
+.ni:hover{color:var(--gold);background:rgba(255,215,0,0.04);}
+.ni.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,215,0,0.07);}
+.nic{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sbf{padding:20px 24px;border-top:1px solid var(--gb);}
+.vs{display:block;text-align:center;color:var(--muted);font-size:11px;letter-spacing:2px;text-decoration:none;margin-bottom:12px;text-transform:uppercase;transition:color 0.2s;}
+.vs:hover{color:var(--gold);}
+.logbtn{width:100%;padding:11px;background:transparent;border:1px solid rgba(255,77,77,0.3);color:#ff8888;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;transition:var(--t);}
+.logbtn:hover{background:rgba(255,77,77,0.08);}
+.main{margin-left:260px;min-height:100vh;padding:38px 42px;}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--gb);}
+.pt{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:3px;color:var(--white);line-height:1;}
+.pt .g{color:var(--gold);}
+.ps{color:var(--muted);font-size:13px;margin-top:8px;}
+.ll-btn{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);text-decoration:none;border:1px solid var(--gb);padding:10px 20px;transition:var(--t);white-space:nowrap;align-self:flex-start;}
+.ll-btn:hover{background:rgba(255,215,0,0.06);}
+
+/* CARD */
+.card{background:var(--grey);border:1px solid var(--gb);padding:30px;margin-bottom:22px;}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(255,215,0,0.07);}
+
+/* STATS */
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.sc{background:var(--grey);border:1px solid var(--gb);padding:22px 16px;text-align:center;transition:var(--t);}
+.sc:hover{border-color:var(--gold);}
+.sc .sn{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--gold);line-height:1;display:block;}
+.sc .sl{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:6px;display:block;}
+
+/* FORM */
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:7px;}
+.fg input,.fg textarea,.fg select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,215,0,0.15);color:var(--white);font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:var(--t);}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold);background:rgba(255,215,0,0.04);}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,0.2);}
+.fg select option{background:var(--black2);}
+.fg textarea{resize:vertical;min-height:90px;line-height:1.6;}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* UPLOAD ZONE */
+.uz{width:100%;padding:28px 16px;border:2px dashed rgba(255,215,0,0.2);text-align:center;cursor:pointer;transition:var(--t);color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:6px;user-select:none;position:relative;}
+.uz:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,0.02);}
+.uz.has-file{border-color:rgba(68,221,136,0.4);background:rgba(68,221,136,0.03);}
+.uz .uzi{font-size:30px;margin-bottom:10px;display:block;}
+.uz .usz{font-size:9px;opacity:0.5;margin-top:5px;display:block;}
+.uz .ufname{font-size:12px;color:var(--green);margin-top:8px;display:block;font-weight:700;}
+.prev-img{width:100%;max-height:200px;object-fit:cover;border:1px solid var(--gb);margin-top:12px;display:none;border-radius:0;}
+.prev-vid{width:100%;max-height:200px;border:1px solid var(--gb);margin-top:12px;display:none;}
+.pbar-wrap{margin-top:10px;display:none;}
+.pbar-label{font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:5px;}
+.pbar{height:3px;background:rgba(255,215,0,0.1);overflow:hidden;border-radius:2px;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));width:0%;transition:width 0.15s;}
+
+/* PROGRESS OVERLAY */
+.uploading-overlay{display:none;position:absolute;inset:0;background:rgba(7,7,7,0.85);align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10;}
+.uploading-overlay.show{display:flex;}
+.uploading-overlay span{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+
+/* BUTTONS */
+.btn-g{padding:13px 32px;background:var(--gold);color:var(--black);border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;transition:var(--t);display:inline-block;}
+.btn-g:hover{background:var(--white);}
+.btn-g:disabled{opacity:0.35;cursor:not-allowed;}
+.btn-o{padding:13px 32px;background:transparent;color:var(--gold);border:1px solid var(--gold);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;transition:var(--t);}
+.btn-o:hover{background:rgba(255,215,0,0.08);}
+.btn-sm{padding:6px 14px;background:transparent;border:1px solid rgba(255,215,0,0.3);color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;transition:var(--t);}
+.btn-sm:hover{background:rgba(255,215,0,0.08);}
+.btn-del{padding:6px 14px;background:transparent;border:1px solid rgba(255,77,77,0.3);color:#ff8888;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;transition:var(--t);}
+.btn-del:hover{background:rgba(255,77,77,0.08);}
+.brow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px;}
+
+/* ITEM LIST */
+.il{display:flex;flex-direction:column;gap:2px;}
+.ir{display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,0.02);border-left:2px solid transparent;transition:var(--t);}
+.ir:hover{border-left-color:var(--gold);background:rgba(255,215,0,0.03);}
+.ith{width:70px;height:46px;object-fit:cover;flex-shrink:0;border:1px solid var(--gb);}
+.ith-ph{width:70px;height:46px;flex-shrink:0;background:var(--black2);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:20px;color:rgba(255,215,0,0.2);}
+.ivi{width:70px;height:46px;object-fit:cover;flex-shrink:0;border:1px solid var(--gb);}
+.ii{flex:1;min-width:0;}
+.ii h4{font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ii span{font-size:11px;color:var(--muted);}
+.ia{display:flex;gap:7px;flex-shrink:0;}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 9px;font-size:9px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;margin-left:6px;}
+.bp{background:rgba(255,215,0,0.1);color:var(--gold);}
+.bd{background:rgba(255,255,255,0.05);color:var(--muted);}
+.bo{background:rgba(68,221,136,0.1);color:var(--green);}
+.bc{background:rgba(255,255,255,0.05);color:var(--muted);}
+
+/* STATES */
+.lst{text-align:center;padding:38px;color:var(--muted);font-size:11px;letter-spacing:3px;text-transform:uppercase;}
+.est{text-align:center;padding:50px;}
+.est .ei{font-size:44px;color:rgba(255,215,0,0.1);margin-bottom:14px;}
+.est p{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.dvd{height:1px;background:var(--gb);margin:22px 0;}
+.snote{color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:18px;}
+
+/* TOGGLE */
+.tw{display:flex;align-items:center;gap:12px;margin-top:6px;}
+.tog{width:44px;height:24px;background:rgba(255,255,255,0.1);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;}
+.tog.on{background:var(--gold);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--white);transition:transform 0.3s;}
+.tog.on::after{transform:translateX(20px);}
+.tl{font-size:13px;color:var(--muted);}
+
+/* TOAST */
+#toast{position:fixed;bottom:26px;right:26px;padding:14px 22px;background:var(--grey);border:1px solid var(--gold);border-left:4px solid var(--gold);color:var(--gold);font-size:13px;letter-spacing:1px;z-index:99999;max-width:380px;transform:translateY(120px);opacity:0;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.err{border-color:var(--red);border-left-color:var(--red);color:#ff8888;}
+#toast.ok{border-color:var(--green);border-left-color:var(--green);color:var(--green);}
+
+/* NOTES GRID */
+.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;}
+.nb{padding:18px;background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.07);}
+.nb .nbl{font-family:'Bebas Neue',sans-serif;font-size:28px;color:rgba(255,215,0,0.2);margin-bottom:6px;}
+.nb p{font-size:12px;color:var(--muted);line-height:1.7;}
+code{color:var(--gold);background:rgba(255,215,0,0.08);padding:2px 6px;font-size:12px;}
+.dz{padding:20px;border:1px solid rgba(255,77,77,0.2);background:rgba(255,77,77,0.03);}
+
+/* FILE SIZE NOTE */
+.sz-note{font-size:11px;color:rgba(255,215,0,0.4);margin-top:5px;letter-spacing:0.5px;}
+
+@media(max-width:1000px){.sr{grid-template-columns:1fr 1fr;}}
+@media(max-width:760px){.sb{width:100%;height:auto;position:relative;}.main{margin-left:0;padding:20px;}.fr2,.fr3{grid-template-columns:1fr;}.sr{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- LOGIN -->
+<div id="ls">
+  <div class="lb">
+    <div class="ll">NOKO</div>
+    <div class="lsub">Admin Control Panel</div>
+    <input class="lf" type="text" id="u" placeholder="Username" autocomplete="off" onkeydown="if(event.key==='Enter')login()"/>
+    <input class="lf" type="password" id="pw" placeholder="Password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="lbtn" onclick="login()">Enter Admin</button>
+    <div class="lerr" id="lerr">&#9888; Incorrect credentials</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sbt">
+      <div class="sbl">NOKO</div>
+      <div class="sbsub"><span class="dot"></span>Admin &middot; Local Server</div>
+    </div>
+    <nav class="sbn">
+      <button class="ni active" data-p="dash"   onclick="go('dash')"><span class="nic">&#9670;</span>Dashboard</button>
+      <button class="ni"        data-p="hero"   onclick="go('hero')"><span class="nic">&#9654;</span>Hero &amp; Branding</button>
+      <button class="ni"        data-p="about"  onclick="go('about')"><span class="nic">&#9711;</span>About Section</button>
+      <button class="ni"        data-p="svc"    onclick="go('svc')"><span class="nic">&#9670;</span>Services</button>
+      <button class="ni"        data-p="port"   onclick="go('port')"><span class="nic">&#9711;</span>Portfolio / Work</button>
+      <button class="ni"        data-p="news"   onclick="go('news')"><span class="nic">&#9670;</span>News Articles</button>
+      <button class="ni"        data-p="intern" onclick="go('intern')"><span class="nic">&#9711;</span>Internship</button>
+      <button class="ni"        data-p="partners" onclick="go('partners')"><span class="nic">&#9733;</span>Partners</button>
+      <button class="ni"        data-p="messages" onclick="go('messages')"><span class="nic">&#9993;</span>Messages</button>
+      <button class="ni"        data-p="set"    onclick="go('set')"><span class="nic">&#9881;</span>Settings</button>
+    </nav>
+    <div class="sbf">
+      <a href="index.html" target="_blank" class="vs">&#8599; View Live Site</a>
+      <button class="logbtn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dash">
+      <div class="ph">
+        <div><div class="pt">Dashboard <span class="g">Overview</span></div><div class="ps">Noko Entertainment Studio &mdash; Local CMS</div></div>
+        <a href="index.html" target="_blank" class="ll-btn">&#8599; VIEW LIVE SITE</a>
+      </div>
+      <div class="sr">
+        <div class="sc"><span class="sn" id="ds-s">&#8212;</span><span class="sl">Services</span></div>
+        <div class="sc"><span class="sn" id="ds-p">&#8212;</span><span class="sl">Portfolio Items</span></div>
+        <div class="sc"><span class="sn" id="ds-n">&#8212;</span><span class="sl">News Articles</span></div>
+        <div class="sc"><span class="sn" id="ds-i">&#8212;</span><span class="sl">Open Positions</span></div>
+      </div>
+      <div class="card">
+        <div class="ct">Quick Actions</div>
+        <div class="brow">
+          <button class="btn-g" onclick="go('news')">+ Add News Article</button>
+          <button class="btn-o" onclick="go('port')">+ Add Portfolio Item</button>
+          <button class="btn-o" onclick="go('svc')">+ Add Service</button>
+          <button class="btn-o" onclick="go('intern')">+ Add Position</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">How Files Work</div>
+        <div class="ng">
+          <div class="nb"><div class="nbl">FILES</div><p>Images and videos are saved to the <code>uploads/</code> folder inside your <code>Testing Site</code> directory.</p></div>
+          <div class="nb"><div class="nbl">VIDEO</div><p>MP4 only &mdash; max 50 MB. Compress with HandBrake or Adobe Media Encoder before uploading.</p></div>
+          <div class="nb"><div class="nbl">IMAGES</div><p>PNG or JPEG &mdash; max 10 MB. Optimise with Squoosh or TinyPNG for fastest load times.</p></div>
+          <div class="nb"><div class="nbl">SERVER</div><p>Keep <code>node server.js</code> running in Terminal for the site to work. Restart after moving files.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO & BRANDING -->
+    <div class="page" id="page-hero">
+      <div class="ph"><div><div class="pt">Hero &amp; <span class="g">Branding</span></div><div class="ps">Upload the hero background video and splash screen logo</div></div></div>
+
+      <div class="card">
+        <div class="ct">Hero Background Video</div>
+        <p class="snote">Full-screen background video on the hero section. MP4 only &mdash; short 5&ndash;15s loops work best. Compress before uploading.</p>
+        <div class="fg">
+          <label>Select Video &mdash; MP4 only &middot; Max 50 MB</label>
+          <div class="uz" id="uz-hvid" onclick="document.getElementById('f-hvid').click()">
+            <span class="uzi">&#9654;</span>
+            Click to select MP4 from your computer<br/>
+            <span class="usz">Desktop files only &mdash; no URL links</span>
+            <span class="ufname" id="fn-hvid"></span>
+          </div>
+          <input type="file" id="f-hvid" accept="video/mp4" style="display:none" onchange="pickFile(this,'hvid','video')"/>
+          <video id="pv-hvid" class="prev-vid" muted loop playsinline controls></video>
+        </div>
+        <div class="sz-note">Existing video will be replaced when you save a new one.</div>
+        <div style="margin-top:16px;">
+          <button class="btn-g" id="btn-hvid" onclick="saveHero('video')" disabled>&#11014; Upload &amp; Save Hero Video</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Brand Logo (Splash Screen)</div>
+        <p class="snote">Circular logo shown on the splash screen. PNG or JPEG &mdash; use a square image for best results.</p>
+        <div class="fg">
+          <label>Select Logo &mdash; PNG / JPEG &middot; Max 10 MB</label>
+          <div class="uz" id="uz-hlogo" onclick="document.getElementById('f-hlogo').click()">
+            <span class="uzi">&#9711;</span>
+            Click to select PNG or JPEG from your computer<br/>
+            <span class="usz">Desktop files only &mdash; no URL links</span>
+            <span class="ufname" id="fn-hlogo"></span>
+          </div>
+          <input type="file" id="f-hlogo" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'hlogo','image')"/>
+          <img id="pv-hlogo" class="prev-img" alt=""/>
+        </div>
+        <div style="margin-top:16px;">
+          <button class="btn-g" id="btn-hlogo" onclick="saveHero('logo')" disabled>&#11014; Upload &amp; Save Logo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="page" id="page-about">
+      <div class="ph"><div><div class="pt">About <span class="g">Section</span></div><div class="ps">Edit the about image, text paragraphs and stats</div></div></div>
+
+      <div class="card">
+        <div class="ct">About Image</div>
+        <div class="fg">
+          <label>Select Image &mdash; PNG / JPEG &middot; Max 10 MB</label>
+          <div class="uz" id="uz-aimg" onclick="document.getElementById('f-aimg').click()">
+            <span class="uzi">&#9711;</span>Click to select PNG or JPEG from your computer
+            <span class="ufname" id="fn-aimg"></span>
+          </div>
+          <input type="file" id="f-aimg" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'aimg','image')"/>
+          <img id="pv-aimg" class="prev-img" alt=""/>
+        </div>
+        <button class="btn-g" id="btn-aimg" onclick="saveAboutImage()" disabled>&#11014; Upload &amp; Save Image</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">About Text &amp; Stats</div>
+        <div class="fg"><label>Paragraph 1</label><textarea id="ab-p1" rows="3"></textarea></div>
+        <div class="fg"><label>Paragraph 2</label><textarea id="ab-p2" rows="3"></textarea></div>
+        <div class="fg"><label>Paragraph 3</label><textarea id="ab-p3" rows="3"></textarea></div>
+        <div class="dvd"></div>
+        <div class="ct">Stat Numbers</div>
+        <div class="fr3">
+          <div class="fg"><label>Projects (e.g. 100+)</label><input type="text" id="ab-s1"/></div>
+          <div class="fg"><label>Years (e.g. 6+)</label><input type="text" id="ab-s2"/></div>
+          <div class="fg"><label>Services (e.g. 12)</label><input type="text" id="ab-s3"/></div>
+        </div>
+        <button class="btn-g" onclick="saveAboutText()">Save Text &amp; Stats</button>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="page" id="page-svc">
+      <div class="ph"><div><div class="pt">Services <span class="g">Manager</span></div><div class="ps">Add service cards &mdash; the website shows only what you post here</div></div></div>
+
+      <div class="card">
+        <div class="ct">Add New Service</div>
+        <div class="fr2">
+          <div class="fg"><label>Service Name *</label><input type="text" id="sv-name" placeholder="e.g. Event Coverage"/></div>
+          <div class="fg"><label>Short Tag *</label><input type="text" id="sv-tag" placeholder="e.g. Events"/></div>
+        </div>
+        <div class="fg"><label>Description *</label><textarea id="sv-desc" rows="3" placeholder="What does this service include?"></textarea></div>
+        <div class="fg"><label>Price *</label><input type="text" id="sv-price" placeholder="e.g. From R1,000/hr  or  Custom Quote"/></div>
+        <div class="fr2">
+          <div class="fg">
+            <label>Service Image &mdash; PNG/JPEG &middot; Max 10 MB</label>
+            <div class="uz" id="uz-svimg" onclick="document.getElementById('f-svimg').click()">
+              <span class="uzi">&#9711;</span>Click to select image<span class="ufname" id="fn-svimg"></span>
+            </div>
+            <input type="file" id="f-svimg" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'svimg','image')"/>
+            <img id="pv-svimg" class="prev-img" alt=""/>
+          </div>
+          <div class="fg">
+            <label>Background Video &mdash; MP4 &middot; Max 50 MB (optional)</label>
+            <div class="uz" id="uz-svvid" onclick="document.getElementById('f-svvid').click()">
+              <span class="uzi">&#9654;</span>Click to select MP4<span class="ufname" id="fn-svvid"></span>
+            </div>
+            <input type="file" id="f-svvid" accept="video/mp4" style="display:none" onchange="pickFile(this,'svvid','video')"/>
+            <video id="pv-svvid" class="prev-vid" muted loop playsinline></video>
+          </div>
+        </div>
+        <button class="btn-g" id="btn-svc" onclick="publishService()">&#11014; Upload &amp; Add Service</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">Services on Site</div>
+        <div class="il" id="svc-list"><div class="lst">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="page" id="page-port">
+      <div class="ph"><div><div class="pt">Portfolio <span class="g">Work</span></div><div class="ps">Add project items shown in the Work section</div></div></div>
+
+      <div class="card">
+        <div class="ct">Add Portfolio Item</div>
+        <div class="fr2">
+          <div class="fg"><label>Project Title *</label><input type="text" id="pt-title" placeholder="e.g. TUT Graduation Film 2025"/></div>
+          <div class="fg">
+            <label>Category *</label>
+            <select id="pt-cat">
+              <option value="">Select category...</option>
+              <option>Event Coverage</option><option>Podcast Production</option>
+              <option>Software Development</option><option>Game Development</option>
+              <option>2D/3D Animation</option><option>Videography</option>
+              <option>Wedding Coverage</option><option>Photography</option>
+              <option>Commercial Production</option><option>Comics &amp; Storyboards</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label>Year *</label><input type="text" id="pt-year" placeholder="2025"/></div>
+          <div class="fg"><label>Client (optional)</label><input type="text" id="pt-client" placeholder="Client name"/></div>
+        </div>
+        <div class="fr2">
+          <div class="fg">
+            <label>Project Image &mdash; PNG/JPEG &middot; Max 10 MB *</label>
+            <div class="uz" id="uz-ptimg" onclick="document.getElementById('f-ptimg').click()">
+              <span class="uzi">&#9711;</span>Click to select image<span class="ufname" id="fn-ptimg"></span>
+            </div>
+            <input type="file" id="f-ptimg" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'ptimg','image')"/>
+            <img id="pv-ptimg" class="prev-img" alt=""/>
+          </div>
+          <div class="fg">
+            <label>Project Video &mdash; MP4 &middot; Max 50 MB (optional)</label>
+            <div class="uz" id="uz-ptvid" onclick="document.getElementById('f-ptvid').click()">
+              <span class="uzi">&#9654;</span>Click to select MP4<span class="ufname" id="fn-ptvid"></span>
+            </div>
+            <input type="file" id="f-ptvid" accept="video/mp4" style="display:none" onchange="pickFile(this,'ptvid','video')"/>
+            <video id="pv-ptvid" class="prev-vid" muted loop playsinline></video>
+          </div>
+        </div>
+        <button class="btn-g" id="btn-port" onclick="publishPortfolio()">&#11014; Upload &amp; Add to Portfolio</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">Portfolio on Site</div>
+        <div class="il" id="port-list"><div class="lst">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="page" id="page-news">
+      <div class="ph"><div><div class="pt">News <span class="g">Articles</span></div><div class="ps">Write and manage articles shown in the News section</div></div></div>
+
+      <div class="card">
+        <div class="ct">Write New Article</div>
+        <div class="fr2">
+          <div class="fg"><label>Article Title *</label><input type="text" id="nw-title" placeholder="e.g. Noko wins Best Studio Award"/></div>
+          <div class="fg">
+            <label>Category</label>
+            <select id="nw-cat">
+              <option>News</option><option>Announcement</option><option>Project</option>
+              <option>Event</option><option>Award</option><option>Behind The Scenes</option><option>Update</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Short Excerpt * &mdash; shown on the news card</label><input type="text" id="nw-exc" placeholder="One or two sentences summarising the article..."/></div>
+        <div class="fg"><label>Full Content *</label><textarea id="nw-body" rows="7" placeholder="Write the full article. Line breaks are preserved on the website."></textarea></div>
+        <div class="fr2">
+          <div class="fg">
+            <label>Cover Image &mdash; PNG/JPEG &middot; Max 10 MB (optional)</label>
+            <div class="uz" id="uz-nwimg" onclick="document.getElementById('f-nwimg').click()">
+              <span class="uzi">&#9711;</span>Click to select image<span class="ufname" id="fn-nwimg"></span>
+            </div>
+            <input type="file" id="f-nwimg" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'nwimg','image')"/>
+            <img id="pv-nwimg" class="prev-img" alt=""/>
+          </div>
+          <div>
+            <div class="fg"><label>Author</label><input type="text" id="nw-auth" placeholder="Noko Entertainment Studio"/></div>
+            <div class="fg">
+              <label>Status</label>
+              <select id="nw-status">
+                <option value="published">Published &mdash; Visible on site</option>
+                <option value="draft">Draft &mdash; Hidden from site</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-g" id="btn-news" onclick="publishNews()">&#11014; Publish Article</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">All Articles</div>
+        <div class="il" id="news-list"><div class="lst">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- INTERNSHIP -->
+    <div class="page" id="page-intern">
+      <div class="ph"><div><div class="pt">Internship <span class="g">Manager</span></div><div class="ps">Section image and open positions</div></div></div>
+
+      <div class="card">
+        <div class="ct">Internship Section Image</div>
+        <div class="fg">
+          <label>Select Image &mdash; PNG/JPEG &middot; Max 10 MB</label>
+          <div class="uz" id="uz-inimg" onclick="document.getElementById('f-inimg').click()">
+            <span class="uzi">&#9711;</span>Click to select image from your computer<span class="ufname" id="fn-inimg"></span>
+          </div>
+          <input type="file" id="f-inimg" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="pickFile(this,'inimg','image')"/>
+          <img id="pv-inimg" class="prev-img" alt=""/>
+        </div>
+        <button class="btn-g" id="btn-inimg" onclick="saveInternImage()" disabled>&#11014; Upload &amp; Save Image</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">Add Open Position</div>
+        <div class="fr2">
+          <div class="fg"><label>Position Title *</label><input type="text" id="ps-title" placeholder="e.g. Junior Animator Intern"/></div>
+          <div class="fg"><label>Role / Department *</label><input type="text" id="ps-role" placeholder="e.g. 3D Animation"/></div>
+        </div>
+        <div class="fg"><label>Description *</label><textarea id="ps-desc" rows="3" placeholder="What will the intern work on?"></textarea></div>
+        <div class="fr2">
+          <div class="fg"><label>Requirements</label><input type="text" id="ps-req" placeholder="e.g. Basic Blender knowledge, portfolio required"/></div>
+          <div class="fg"><label>Deadline (optional)</label><input type="date" id="ps-dl" style="color-scheme:dark;"/></div>
+        </div>
+        <div class="fg">
+          <label>Visibility</label>
+          <div class="tw">
+            <div class="tog on" id="ps-tog" onclick="this.classList.toggle('on')"></div>
+            <span class="tl">Position is Open &mdash; visible on website</span>
+          </div>
+        </div>
+        <button class="btn-g" onclick="publishPosition()">Add Position</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">All Positions</div>
+        <div class="il" id="pos-list"><div class="lst">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PARTNERS PAGE -->
+    <div class="page" id="page-partners">
+      <div class="ph"><div><div class="pt">Partners <span class="g">Manager</span></div><div class="ps">Add organisations you work with</div></div></div>
+      <div class="card">
+      <div class="ct">Add New Partner</div>
+      <div class="fr2">
+      <div class="fg"><label>Partner Name *</label><input type="text" id="partner-name"/></div>
+      <div class="fg"><label>Website (optional)</label><input type="url" id="partner-website" placeholder="https://..."/></div>
+    </div>
+      <div class="fg"><label>Logo (PNG/JPEG, max 10MB)</label><div class="uz" id="uz-partner-logo" onclick="document.getElementById('f-partner-logo').click()"><span class="uzi">&#9711;</span>Click to select logo</div><input type="file" id="f-partner-logo" accept="image/png,image/jpeg" style="display:none" onchange="pickPartnerLogo(this)"/><img id="pv-partner-logo" class="prev-img" style="display:none;"/></div>
+      <button class="btn-g" id="btn-add-partner" onclick="addPartner()">Add Partner</button>
+    </div>
+      <div class="card"><div class="ct">Current Partners</div><div id="partners-list" class="il"><div class="lst">Loading...</div></div></div>
+</div>
+
+<!-- MESSAGES PAGE -->
+<div class="page" id="page-messages">
+  <div class="ph"><div><div class="pt">Messages &amp; <span class="g">Applications</span></div><div class="ps">Contact form submissions and internship applications with uploaded files</div></div></div>
+  <div class="card">
+    <div class="ct">Contact Messages</div>
+    <div id="contact-messages-list" class="il"><div class="lst">Loading...</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">Internship Applications</div>
+    <div id="internship-apps-list" class="il"><div class="lst">Loading...</div></div>
+  </div>
+</div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-set">
+      <div class="ph"><div><div class="pt">Admin <span class="g">Settings</span></div><div class="ps">Credentials and data management</div></div></div>
+
+      <div class="card">
+        <div class="ct">Change Password</div>
+        <p class="snote">Changes apply immediately for this session. To make it permanent, update <code>ADMIN_PASS</code> in admin.html source code.</p>
+        <div class="fr2">
+          <div class="fg"><label>Current Password</label><input type="password" id="cp" placeholder="Current password"/></div>
+          <div class="fg"><label>New Password (min 8 chars)</label><input type="password" id="np" placeholder="New password"/></div>
+        </div>
+        <button class="btn-o" onclick="changePw()">Update Password</button>
+      </div>
+
+      <div class="card">
+        <div class="ct">Server Info</div>
+        <div style="padding:18px;background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.08);">
+          <p style="color:var(--muted);font-size:13px;line-height:2.3;">
+            <strong style="color:var(--white);">Server URL</strong><br/><code>http://localhost:3000</code><br/><br/>
+            <strong style="color:var(--white);">Data File</strong><br/><code>Testing Site/data.json</code><br/><br/>
+            <strong style="color:var(--white);">Uploads Folder</strong><br/><code>Testing Site/uploads/</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Danger Zone</div>
+        <p class="snote" style="color:#ff8888;">Permanently deletes data. Uploaded files in <code>uploads/</code> will also be removed.</p>
+        <div class="dz">
+          <div class="brow">
+            <button class="btn-del" onclick="clearSection('services',loadSvcList)">Delete All Services</button>
+            <button class="btn-del" onclick="clearSection('portfolio',loadPortList)">Delete All Portfolio</button>
+            <button class="btn-del" onclick="clearSection('news',loadNewsList)">Delete All News</button>
+            <button class="btn-del" onclick="clearSection('internships',loadPosList)">Delete All Positions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   CONFIG — update ADMIN_PASS to change login password
+══════════════════════════════════════════════════ */
+var ADMIN_USER = 'admin';
+var ADMIN_PASS = 'Noko2025';
+
+/* ══════════════════════════════════════════════════
+   FILE STORE — holds selected File objects
+══════════════════════════════════════════════════ */
+var FILES = {};
+
+/* ══════════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════════ */
+function login(){
+  var u = document.getElementById('u').value.trim();
+  var p = document.getElementById('pw').value;
+  if(u === ADMIN_USER && p === ADMIN_PASS){
+    sessionStorage.setItem('noko_adm','1');
+    document.getElementById('ls').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initDash();
+  } else {
+    var e = document.getElementById('lerr');
+    e.style.display = 'block';
+    document.getElementById('pw').value = '';
+    setTimeout(function(){ e.style.display='none'; }, 3000);
+  }
+}
+function logout(){
+  if(!confirm('Log out?')) return;
+  sessionStorage.removeItem('noko_adm');
+  location.reload();
+}
+if(sessionStorage.getItem('noko_adm') === '1'){
+  document.getElementById('ls').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  setTimeout(initDash, 60);
+}
+
+/* ══════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════ */
+function go(name){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.ni').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('page-'+name).classList.add('active');
+  var btn = document.querySelector('.ni[data-p="'+name+'"]');
+  if(btn) btn.classList.add('active');
+  if(name==='svc')    loadSvcList();
+  if(name==='port')   loadPortList();
+  if(name==='news')   loadNewsList();
+  if(name==='intern'){ loadPosList(); loadInternPrev(); }
+  if(name==='about')  loadAboutData();
+  if(name==='dash')   initDash();
+}
+
+/* ══════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════ */
+var _tt;
+function toast(msg, type){
+  clearTimeout(_tt);
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + (type||'');
+  _tt = setTimeout(function(){ t.className = ''; }, 4500);
+}
+
+/* ══════════════════════════════════════════════════
+   FILE PICKER — validates + previews
+══════════════════════════════════════════════════ */
+function pickFile(input, key, type){
+  var file = input.files[0];
+  if(!file) return;
+
+  // Strict type check
+  if(type === 'video' && file.type !== 'video/mp4'){
+    toast('Only MP4 videos are allowed.', 'err'); input.value=''; return;
+  }
+  if(type === 'image' && !['image/png','image/jpeg','image/jpg'].includes(file.type)){
+    toast('Only PNG and JPEG images are allowed.', 'err'); input.value=''; return;
+  }
+
+  // Size limits
+  var maxBytes = type === 'video' ? 50*1024*1024 : 10*1024*1024;
+  var maxLabel = type === 'video' ? '50 MB' : '10 MB';
+  if(file.size > maxBytes){
+    toast('File too large! Maximum '+maxLabel+'. Please compress it first.', 'err'); input.value=''; return;
+  }
+
+  FILES[key] = file;
+
+  // Update zone
+  var uz = document.getElementById('uz-'+key);
+  if(uz) uz.classList.add('has-file');
+  var fn = document.getElementById('fn-'+key);
+  if(fn) fn.textContent = file.name + ' (' + fmtSz(file.size) + ')';
+
+  // Preview using object URL (fast, no base64 needed)
+  var url = URL.createObjectURL(file);
+  var prev = document.getElementById('pv-'+key);
+  if(prev){
+    prev.style.display = 'block';
+    if(type === 'image') prev.src = url;
+    else { prev.src = url; prev.load(); prev.play().catch(function(){}); }
+  }
+
+  // Enable save button
+  var btn = document.getElementById('btn-'+key);
+  if(btn) btn.disabled = false;
+
+  toast('File ready. Click the upload button to save it to the site.', 'ok');
+}
+
+function fmtSz(b){
+  if(b < 1024) return b+'B';
+  if(b < 1048576) return (b/1024).toFixed(1)+'KB';
+  return (b/1048576).toFixed(2)+'MB';
+}
+
+/* ══════════════════════════════════════════════════
+   API HELPERS
+══════════════════════════════════════════════════ */
+async function apiGet(){ return fetch('/api/data').then(function(r){ return r.json(); }); }
+
+async function apiUpload(file, name){
+  var fd = new FormData();
+  fd.append('file', file);
+  var r = await fetch('/api/upload?name='+encodeURIComponent(name), { method:'POST', body:fd });
+  var j = await r.json();
+  if(!r.ok || j.error) throw new Error(j.error || 'Upload failed');
+  return j.path;
+}
+
+async function apiSave(section, data, id){
+  var body = { section: section, data: data };
+  if(id !== undefined) body.id = id;
+  var r = await fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+  return r.json();
+}
+
+async function apiDelete(section, id){
+  return fetch('/api/item?section='+section+'&id='+id, { method:'DELETE' }).then(function(r){ return r.json(); });
+}
+
+async function apiToggle(section, id, field, value){
+  return fetch('/api/toggle?section='+section+'&id='+id+'&field='+field+'&value='+value, { method:'PATCH' }).then(function(r){ return r.json(); });
+}
+
+/* ══════════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════════ */
+async function initDash(){
+  var d = await apiGet();
+  document.getElementById('ds-s').textContent = d.services   ? Object.keys(d.services).length   : '0';
+  document.getElementById('ds-p').textContent = d.portfolio  ? Object.keys(d.portfolio).length  : '0';
+  document.getElementById('ds-n').textContent = d.news       ? Object.keys(d.news).length       : '0';
+  var open = d.internships ? Object.values(d.internships).filter(function(v){ return v.isOpen; }).length : 0;
+  document.getElementById('ds-i').textContent = open;
+}
+
+/* ══════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════ */
+async function saveHero(type){
+  var key  = type === 'video' ? 'hvid' : 'hlogo';
+  var name = type === 'video' ? 'hero-video' : 'hero-logo';
+  var field= type === 'video' ? 'videoPath' : 'logoPath';
+  var file = FILES[key];
+  if(!file){ toast('No file selected.', 'err'); return; }
+
+  var btn = document.getElementById('btn-'+key);
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  try {
+    var p = await apiUpload(file, name);
+    var data = {}; data[field] = p;
+    await apiSave('hero', data);
+    toast('\u2713 '+(type==='video'?'Hero video':'Logo')+' saved! Live on site.', 'ok');
+    btn.textContent = '\u2713 Saved';
+  } catch(e){
+    toast('Upload failed: '+e.message, 'err');
+    btn.textContent = '\u2B06 Upload & Save '+(type==='video'?'Hero Video':'Logo');
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════════════ */
+async function loadAboutData(){
+  var d = await apiGet();
+  var a = d.about || {};
+  ['p1','p2','p3'].forEach(function(k){
+    var el = document.getElementById('ab-'+k);
+    if(el && a[k]) el.value = a[k];
+  });
+  ['s1','s2','s3'].forEach(function(k){
+    var el = document.getElementById('ab-'+k);
+    if(el && a[k]) el.value = a[k];
+  });
+  if(a.imagePath){
+    var p = document.getElementById('pv-aimg');
+    if(p){ p.src = a.imagePath; p.style.display = 'block'; }
+    var fn = document.getElementById('fn-aimg');
+    if(fn) fn.textContent = 'Current: ' + a.imagePath.split('/').pop();
+    var uz = document.getElementById('uz-aimg');
+    if(uz) uz.classList.add('has-file');
+    var btn = document.getElementById('btn-aimg');
+    if(btn) btn.disabled = false;
+  }
+}
+async function saveAboutImage(){
+  var file = FILES['aimg'];
+  if(!file){ toast('No image selected.', 'err'); return; }
+  var btn = document.getElementById('btn-aimg');
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  try {
+    var p = await apiUpload(file, 'about-img');
+    await apiSave('about', { imagePath: p });
+    toast('\u2713 About image saved!', 'ok');
+    btn.textContent = '\u2713 Saved';
+  } catch(e){
+    toast('Upload failed: '+e.message, 'err');
+    btn.textContent = '\u2B06 Upload & Save Image'; btn.disabled = false;
+  }
+}
+async function saveAboutText(){
+  var data = {
+    p1: document.getElementById('ab-p1').value,
+    p2: document.getElementById('ab-p2').value,
+    p3: document.getElementById('ab-p3').value,
+    s1: document.getElementById('ab-s1').value,
+    s2: document.getElementById('ab-s2').value,
+    s3: document.getElementById('ab-s3').value
+  };
+  await apiSave('about', data);
+  toast('\u2713 About text and stats saved! Live on site.', 'ok');
+}
+
+/* ══════════════════════════════════════════════════
+   SERVICES
+══════════════════════════════════════════════════ */
+async function publishService(){
+  var name  = document.getElementById('sv-name').value.trim();
+  var tag   = document.getElementById('sv-tag').value.trim();
+  var desc  = document.getElementById('sv-desc').value.trim();
+  var price = document.getElementById('sv-price').value.trim();
+  if(!name||!tag||!desc||!price){ toast('Please fill in Name, Tag, Description and Price.', 'err'); return; }
+
+  var btn = document.getElementById('btn-svc');
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  try {
+    var payload = { name:name, tag:tag, desc:desc, price:price, ts:Date.now() };
+    if(FILES['svimg']){ payload.imagePath = await apiUpload(FILES['svimg'], 'svc-img-'+Date.now()); }
+    if(FILES['svvid']){ payload.videoPath = await apiUpload(FILES['svvid'], 'svc-vid-'+Date.now()); btn.textContent = 'Uploading video...'; }
+    await apiSave('services', payload, String(Date.now()));
+    toast('\u2713 Service added to site!', 'ok');
+    clearForm(['sv-name','sv-tag','sv-desc','sv-price'], ['svimg','svvid'], ['pv-svimg','pv-svvid'], ['fn-svimg','fn-svvid'], ['uz-svimg','uz-svvid'], ['f-svimg','f-svvid']);
+    loadSvcList(); initDash();
+  } catch(e){ toast('Error: '+e.message, 'err'); }
+  btn.disabled = false; btn.textContent = '\u2B06 Upload & Add Service';
+}
+async function loadSvcList(){
+  var list = document.getElementById('svc-list');
+  list.innerHTML = '<div class="lst">Loading...</div>';
+  var d = await apiGet();
+  if(!d.services || !Object.keys(d.services).length){
+    list.innerHTML = '<div class="est"><div class="ei">&#9670;</div><p>No services added yet</p></div>'; return;
+  }
+  var items = Object.entries(d.services).sort(function(a,b){ return a[1].ts - b[1].ts; });
+  list.innerHTML = items.map(function(e){
+    var id=e[0]; var v=e[1];
+    var thumb = v.imagePath ? '<img class="ith" src="'+v.imagePath+'" alt=""/>' : '<div class="ith-ph">&#9670;</div>';
+    return '<div class="ir">'+thumb+
+      '<div class="ii"><h4>'+v.name+'</h4><span>'+v.tag+' &middot; '+v.price+'</span></div>'+
+      '<div class="ia"><button class="btn-del" onclick="delItem(\'services\',\''+id+'\',loadSvcList)">Delete</button></div></div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════════════════ */
+async function publishPortfolio(){
+  var title = document.getElementById('pt-title').value.trim();
+  var cat   = document.getElementById('pt-cat').value;
+  var year  = document.getElementById('pt-year').value.trim() || String(new Date().getFullYear());
+  var client= document.getElementById('pt-client').value.trim();
+  if(!title||!cat){ toast('Please fill in Title and Category.', 'err'); return; }
+  if(!FILES['ptimg'] && !FILES['ptvid']){ toast('Please select at least an image or video.', 'err'); return; }
+
+  var btn = document.getElementById('btn-port');
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  try {
+    var payload = { title:title, category:cat, year:year, client:client, ts:Date.now() };
+    if(FILES['ptimg']){ payload.imagePath = await apiUpload(FILES['ptimg'], 'port-img-'+Date.now()); }
+    if(FILES['ptvid']){ btn.textContent='Uploading video...'; payload.videoPath = await apiUpload(FILES['ptvid'], 'port-vid-'+Date.now()); }
+    await apiSave('portfolio', payload, String(Date.now()));
+    toast('\u2713 Portfolio item added to site!', 'ok');
+    clearForm(['pt-title','pt-year','pt-client'], ['ptimg','ptvid'], ['pv-ptimg','pv-ptvid'], ['fn-ptimg','fn-ptvid'], ['uz-ptimg','uz-ptvid'], ['f-ptimg','f-ptvid']);
+    document.getElementById('pt-cat').value='';
+    loadPortList(); initDash();
+  } catch(e){ toast('Error: '+e.message, 'err'); }
+  btn.disabled=false; btn.textContent='\u2B06 Upload & Add to Portfolio';
+}
+async function loadPortList(){
+  var list = document.getElementById('port-list');
+  list.innerHTML = '<div class="lst">Loading...</div>';
+  var d = await apiGet();
+  if(!d.portfolio||!Object.keys(d.portfolio).length){
+    list.innerHTML='<div class="est"><div class="ei">&#9711;</div><p>No portfolio items yet</p></div>'; return;
+  }
+  var items = Object.entries(d.portfolio).sort(function(a,b){ return b[1].ts - a[1].ts; });
+  list.innerHTML = items.map(function(e){
+    var id=e[0]; var v=e[1];
+    var thumb = v.imagePath ? '<img class="ith" src="'+v.imagePath+'" alt=""/>' : '<div class="ith-ph">&#9654;</div>';
+    return '<div class="ir">'+thumb+
+      '<div class="ii"><h4>'+v.title+'</h4><span>'+v.category+' &middot; '+v.year+(v.client?' &middot; '+v.client:'')+'</span></div>'+
+      '<div class="ia"><button class="btn-del" onclick="delItem(\'portfolio\',\''+id+'\',loadPortList)">Delete</button></div></div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   NEWS
+══════════════════════════════════════════════════ */
+async function publishNews(){
+  var title  = document.getElementById('nw-title').value.trim();
+  var exc    = document.getElementById('nw-exc').value.trim();
+  var body   = document.getElementById('nw-body').value.trim();
+  var cat    = document.getElementById('nw-cat').value;
+  var auth   = document.getElementById('nw-auth').value.trim() || 'Noko Entertainment Studio';
+  var status = document.getElementById('nw-status').value;
+  if(!title||!exc||!body){ toast('Please fill in Title, Excerpt and Content.', 'err'); return; }
+
+  var btn = document.getElementById('btn-news');
+  btn.disabled=true; btn.textContent='Saving...';
+  try {
+    var date = new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});
+    var payload = { title:title, exc:exc, body:body, cat:cat, auth:auth, stat:status, date:date, ts:Date.now() };
+    if(FILES['nwimg']){ btn.textContent='Uploading image...'; payload.imagePath = await apiUpload(FILES['nwimg'], 'news-img-'+Date.now()); }
+    await apiSave('news', payload, String(Date.now()));
+    toast('\u2713 Article '+status+'!'+(status==='published'?' Live on site.':' Saved as draft.'), 'ok');
+    clearForm(['nw-title','nw-exc','nw-body','nw-auth'], ['nwimg'], ['pv-nwimg'], ['fn-nwimg'], ['uz-nwimg'], ['f-nwimg']);
+    document.getElementById('nw-status').value='published';
+    loadNewsList(); initDash();
+  } catch(e){ toast('Error: '+e.message, 'err'); }
+  btn.disabled=false; btn.textContent='\u2B06 Publish Article';
+}
+async function loadNewsList(){
+  var list = document.getElementById('news-list');
+  list.innerHTML = '<div class="lst">Loading...</div>';
+  var d = await apiGet();
+  if(!d.news||!Object.keys(d.news).length){
+    list.innerHTML='<div class="est"><div class="ei">&#9670;</div><p>No articles yet</p></div>'; return;
+  }
+  var items = Object.entries(d.news).sort(function(a,b){ return b[1].ts - a[1].ts; });
+  list.innerHTML = items.map(function(e){
+    var id=e[0]; var v=e[1]; var isPub=v.stat==='published';
+    var thumb = v.imagePath ? '<img class="ith" src="'+v.imagePath+'" alt=""/>' : '<div class="ith-ph">&#9670;</div>';
+    return '<div class="ir">'+thumb+
+      '<div class="ii"><h4>'+v.title+'<span class="badge '+(isPub?'bp':'bd')+'">'+(isPub?'Published':'Draft')+'</span></h4>'+
+      '<span>'+v.date+' &middot; '+v.cat+'</span></div>'+
+      '<div class="ia">'+
+      '<button class="btn-sm" onclick="toggleNews(\''+id+'\',\''+v.stat+'\')">'+(isPub?'Unpublish':'Publish')+'</button>'+
+      '<button class="btn-del" onclick="delItem(\'news\',\''+id+'\',loadNewsList)">Delete</button></div></div>';
+  }).join('');
+}
+async function toggleNews(id, cur){
+  var ns = cur==='published'?'draft':'published';
+  await apiToggle('news', id, 'stat', ns);
+  toast('\u2713 Article '+ns+'.', 'ok');
+  loadNewsList();
+}
+
+/* ══════════════════════════════════════════════════
+   INTERNSHIP
+══════════════════════════════════════════════════ */
+async function loadInternPrev(){
+  var d = await apiGet();
+  if(!d.internship||!d.internship.imagePath) return;
+  var p = document.getElementById('pv-inimg');
+  if(p){ p.src = d.internship.imagePath; p.style.display='block'; }
+  var fn = document.getElementById('fn-inimg');
+  if(fn) fn.textContent = 'Current: ' + d.internship.imagePath.split('/').pop();
+  var uz = document.getElementById('uz-inimg');
+  if(uz) uz.classList.add('has-file');
+  var btn = document.getElementById('btn-inimg');
+  if(btn) btn.disabled = false;
+}
+async function saveInternImage(){
+  var file = FILES['inimg'];
+  if(!file){ toast('No image selected.', 'err'); return; }
+  var btn = document.getElementById('btn-inimg');
+  btn.disabled=true; btn.textContent='Uploading...';
+  try {
+    var p = await apiUpload(file, 'intern-img');
+    await apiSave('internship', { imagePath: p });
+    toast('\u2713 Internship image saved!', 'ok');
+    btn.textContent = '\u2713 Saved';
+  } catch(e){
+    toast('Error: '+e.message, 'err');
+    btn.textContent='\u2B06 Upload & Save Image'; btn.disabled=false;
+  }
+}
+async function publishPosition(){
+  var title = document.getElementById('ps-title').value.trim();
+  var role  = document.getElementById('ps-role').value.trim();
+  var desc  = document.getElementById('ps-desc').value.trim();
+  var req   = document.getElementById('ps-req').value.trim();
+  var dl    = document.getElementById('ps-dl').value;
+  var isOpen= document.getElementById('ps-tog').classList.contains('on');
+  if(!title||!role||!desc){ toast('Please fill in Title, Role and Description.', 'err'); return; }
+  var dlFmt = dl ? new Date(dl).toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'}) : '';
+  await apiSave('internships', { title:title, role:role, desc:desc, requirements:req, deadline:dlFmt, isOpen:isOpen, ts:Date.now() }, String(Date.now()));
+  toast('\u2713 Position added!'+(isOpen?' Visible on site.':' Saved as closed.'), 'ok');
+  ['ps-title','ps-role','ps-desc','ps-req'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('ps-dl').value='';
+  document.getElementById('ps-tog').classList.add('on');
+  loadPosList(); initDash();
+}
+async function loadPosList(){
+  var list = document.getElementById('pos-list');
+  list.innerHTML='<div class="lst">Loading...</div>';
+  var d = await apiGet();
+  if(!d.internships||!Object.keys(d.internships).length){
+    list.innerHTML='<div class="est"><div class="ei">&#9711;</div><p>No positions yet</p></div>'; return;
+  }
+  var items = Object.entries(d.internships).sort(function(a,b){ return b[1].ts - a[1].ts; });
+  list.innerHTML = items.map(function(e){
+    var id=e[0]; var v=e[1];
+    return '<div class="ir"><div class="ith-ph">&#9711;</div>'+
+      '<div class="ii"><h4>'+v.title+'<span class="badge '+(v.isOpen?'bo':'bc')+'">'+(v.isOpen?'Open':'Closed')+'</span></h4>'+
+      '<span>'+v.role+(v.deadline?' &middot; Deadline: '+v.deadline:'')+'</span></div>'+
+      '<div class="ia">'+
+      '<button class="btn-sm" onclick="togglePos(\''+id+'\','+v.isOpen+')">'+(v.isOpen?'Close':'Reopen')+'</button>'+
+      '<button class="btn-del" onclick="delItem(\'internships\',\''+id+'\',loadPosList)">Delete</button></div></div>';
+  }).join('');
+}
+async function togglePos(id, isOpen){
+  await apiToggle('internships', id, 'isOpen', !isOpen);
+  toast(isOpen?'Position closed.':'Position reopened! Visible on site.', 'ok');
+  loadPosList(); initDash();
+}
+
+/* ══════════════════════════════════════════════════
+   SHARED HELPERS
+══════════════════════════════════════════════════ */
+async function delItem(section, id, reloadFn){
+  if(!confirm('Permanently delete this item and its files?')) return;
+  await apiDelete(section, id);
+  toast('\u2713 Deleted.', 'ok');
+  reloadFn(); initDash();
+}
+async function clearSection(section, reloadFn){
+  if(!confirm('Delete ALL items in this section? Cannot be undone.')) return;
+  await fetch('/api/section?section='+section, { method:'DELETE' });
+  toast('\u2713 All deleted.', 'ok');
+  reloadFn(); initDash();
+}
+
+function clearForm(textIds, fileKeys, prevIds, fnIds, uzIds, inputIds){
+  textIds.forEach(function(id){ var el=document.getElementById(id); if(el)el.value=''; });
+  fileKeys.forEach(function(k){ FILES[k]=null; });
+  prevIds.forEach(function(id){ var el=document.getElementById(id); if(el)el.style.display='none'; });
+  fnIds.forEach(function(id){ var el=document.getElementById(id); if(el)el.textContent=''; });
+  uzIds.forEach(function(id){ var el=document.getElementById(id); if(el)el.classList.remove('has-file'); });
+  inputIds.forEach(function(id){ var el=document.getElementById(id); if(el)el.value=''; });
+}
+
+/* ══════════════════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════════════════ */
+function changePw(){
+  var c = document.getElementById('cp').value;
+  var n = document.getElementById('np').value;
+  if(c !== ADMIN_PASS){ toast('Current password incorrect.', 'err'); return; }
+  if(!n || n.length < 8){ toast('New password must be at least 8 characters.', 'err'); return; }
+  ADMIN_PASS = n;
+  document.getElementById('cp').value=''; document.getElementById('np').value='';
+  toast('\u2713 Password updated for this session. Update the source file to make it permanent.', 'ok');
+}
+
+// Partners
+let selectedPartnerLogoFile = null;
+function pickPartnerLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!['image/png','image/jpeg'].includes(file.type)) { toast('Only PNG/JPEG', 'err'); return; }
+  if (file.size > 10*1024*1024) { toast('Max 10MB', 'err'); return; }
+  selectedPartnerLogoFile = file;
+  const url = URL.createObjectURL(file);
+  document.getElementById('pv-partner-logo').src = url;
+  document.getElementById('pv-partner-logo').style.display = 'block';
+  document.getElementById('uz-partner-logo').classList.add('has-file');
+}
+async function addPartner() {
+  const name = document.getElementById('partner-name').value.trim();
+  if (!name) { toast('Partner name required', 'err'); return; }
+  const website = document.getElementById('partner-website').value.trim();
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('website', website);
+  if (selectedPartnerLogoFile) fd.append('logo', selectedPartnerLogoFile); // field name must be 'logo'
+  const btn = document.getElementById('btn-add-partner');
+  btn.disabled = true; btn.textContent = 'Adding...';
+  try {
+    const res = await fetch('/api/partners', { method: 'POST', body: fd });
+    if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Failed'); }
+    toast('Partner added!', 'ok');
+    document.getElementById('partner-name').value = '';
+    document.getElementById('partner-website').value = '';
+    selectedPartnerLogoFile = null;
+    document.getElementById('pv-partner-logo').style.display = 'none';
+    document.getElementById('uz-partner-logo').classList.remove('has-file');
+    loadPartnersList();
+  } catch(e) { toast('Failed: ' + e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'Add Partner';
+}
+async function loadPartnersList() {
+  const d = await apiGet();
+  const partners = d.partners ? Object.entries(d.partners) : [];
+  const container = document.getElementById('partners-list');
+  if (!partners.length) { container.innerHTML = '<div class="est"><p>No partners yet</p></div>'; return; }
+  container.innerHTML = partners.map(([id, p]) => `
+    <div class="ir">
+      ${p.logoPath ? `<img class="ith" src="${p.logoPath}" style="object-fit:contain;">` : '<div class="ith-ph">&#9733;</div>'}
+      <div class="ii"><h4>${p.name}</h4><span>${p.website || 'no website'}</span></div>
+      <div class="ia"><button class="btn-del" onclick="deletePartner('${id}')">Delete</button></div>
+    </div>
+  `).join('');
+}
+async function deletePartner(id) {
+  if (!confirm('Delete this partner?')) return;
+  await fetch(`/api/partners/${id}`, { method: 'DELETE' });
+  toast('Deleted', 'ok');
+  loadPartnersList();
+}
+
+// Messages
+async function loadMessages() {
+  const res = await fetch('/api/messages');
+  const data = await res.json();
+  
+  // ----- CONTACT MESSAGES -----
+  const cm = data.contacts || [];
+  const cmDiv = document.getElementById('contact-messages-list');
+  if (!cm.length) {
+    cmDiv.innerHTML = '<div class="est"><p>No contact messages</p></div>';
+  } else {
+    cmDiv.innerHTML = cm.map(m => `
+      <div class="ir" style="flex-direction:column; align-items:stretch; gap:12px; margin-bottom:16px;">
+        <div class="ii" style="width:100%;">
+          <h4 style="display:flex; justify-content:space-between;">
+            ${escapeHtml(m.name)} 
+            <span style="font-size:11px; color:var(--gold);">${m.service || 'General'}</span>
+          </h4>
+          <div><strong>Email:</strong> ${m.email}</div>
+          <div><strong>Phone:</strong> ${m.phone || '—'}</div>
+          <div style="margin-top:10px;"><strong>Message:</strong><br>${escapeHtml(m.message).replace(/\n/g, '<br>')}</div>
+          ${m.attachment ? `<div style="margin-top:10px;"><a href="${m.attachment}" target="_blank" class="btn-sm">📎 Download Attachment</a></div>` : ''}
+          <div style="margin-top:10px; font-size:10px; color:#666;">Received: ${new Date(m.date).toLocaleString()}</div>
+        </div>
+        <div class="ia" style="align-self:flex-end;">
+          <button class="btn-del" onclick="deleteMessage('contact','${m.id}')">Delete</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // ----- INTERNSHIP APPLICATIONS (FULL DETAILS, NO TRUNCATION) -----
+  const ia = data.internships || [];
+  const iaDiv = document.getElementById('internship-apps-list');
+  if (!ia.length) {
+    iaDiv.innerHTML = '<div class="est"><p>No internship applications</p></div>';
+  } else {
+    iaDiv.innerHTML = ia.map(a => `
+      <div class="ir" style="flex-direction:column; align-items:stretch; gap:12px; margin-bottom:16px;">
+        <div class="ii" style="width:100%;">
+          <h4 style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,215,0,0.2); padding-bottom:8px;">
+            ${escapeHtml(a.name)} 
+            <span style="font-size:11px; color:var(--gold);">${a.availability || 'Availability not specified'}</span>
+          </h4>
+          
+          <!-- PERSONAL INFO SECTION -->
+          <div style="background:rgba(255,215,0,0.05); padding:12px; margin:10px 0; border-left:3px solid var(--gold);">
+            <strong>📌 PERSONAL INFORMATION</strong><br>
+            <strong>Email:</strong> ${a.email}<br>
+            <strong>Phone:</strong> ${a.phone}<br>
+            <strong>Date of Birth:</strong> ${a.dob || '—'}<br>
+            <strong>Gender:</strong> ${a.gender || '—'}<br>
+            <strong>Nationality:</strong> ${a.nationality || '—'}<br>
+            <strong>Address:</strong><br> ${escapeHtml(a.address) || '—'}
+          </div>
+          
+          <!-- EDUCATION SECTION -->
+          <div style="background:rgba(255,255,255,0.02); padding:12px; margin:10px 0;">
+            <strong>🎓 EDUCATION</strong><br>
+            <strong>Highest Qualification:</strong> ${a.qualification || '—'}<br>
+            <strong>Institution:</strong> ${a.institution || '—'}<br>
+            <strong>Year Completed:</strong> ${a.yearCompleted || '—'}<br>
+            <strong>Certifications / Courses:</strong><br> ${escapeHtml(a.certifications) || '—'}
+          </div>
+          
+          <!-- SKILLS & EXPERIENCE -->
+          <div style="background:rgba(255,255,255,0.02); padding:12px; margin:10px 0;">
+            <strong>🛠️ SKILLS & EXPERIENCE</strong><br>
+            <strong>Skills:</strong> ${escapeHtml(a.skills) || '—'}<br>
+            <strong>Previous Experience:</strong><br> ${escapeHtml(a.experience) || '—'}<br>
+            <strong>Portfolio Link:</strong> ${a.portfolioLink ? `<a href="${a.portfolioLink}" target="_blank">${a.portfolioLink}</a>` : '—'}
+          </div>
+          
+          <!-- MOTIVATION & AVAILABILITY -->
+          <div style="background:rgba(255,255,255,0.02); padding:12px; margin:10px 0;">
+            <strong>💬 MOTIVATION</strong><br>
+            <strong>Why join Noko?</strong><br> ${escapeHtml(a.motivation) || '—'}<br>
+            <strong>Availability:</strong> ${a.availability || '—'}<br>
+            <strong>Additional Info:</strong> ${escapeHtml(a.additionalInfo) || '—'}
+          </div>
+          
+          <!-- REFERENCES -->
+          <div style="background:rgba(255,255,255,0.02); padding:12px; margin:10px 0;">
+            <strong>👥 REFERENCES</strong><br>
+            <strong>Reference 1:</strong> ${escapeHtml(a.ref1) || '—'}<br>
+            <strong>Reference 2:</strong> ${escapeHtml(a.ref2) || '—'}
+          </div>
+          
+          <!-- DOCUMENTS -->
+          <div style="margin:10px 0;">
+            <strong>📎 UPLOADED DOCUMENTS (click to download)</strong>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+              ${a.formPath ? `<a href="${a.formPath}" target="_blank" class="btn-sm">📄 Application Form</a>` : ''}
+              <a href="${a.cvPath}" target="_blank" class="btn-sm">📄 CV / Resume</a>
+              <a href="${a.idPath}" target="_blank" class="btn-sm">🪪 Certified ID / Passport</a>
+              <a href="${a.academicPath}" target="_blank" class="btn-sm">📚 Academic Record / Transcript</a>
+            </div>
+          </div>
+          
+          <div style="margin-top:10px; font-size:10px; color:#666;">Submitted: ${new Date(a.date).toLocaleString()}</div>
+        </div>
+        <div class="ia" style="align-self:flex-end;">
+          <button class="btn-del" onclick="deleteMessage('internship','${a.id}')">Delete</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+async function deleteMessage(type, id) {
+  if (!confirm('Delete this message?')) return;
+  await fetch(`/api/message/${type}/${id}`, { method: 'DELETE' });
+  toast('Deleted', 'ok');
+  loadMessages();
+}
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+// extend go() to include partners and messages
+const originalGo = window.go;
+window.go = function(name) {
+  if (originalGo) originalGo(name);
+  if (name === 'partners') loadPartnersList();
+  if (name === 'messages') loadMessages();
+};
+// also call loadPartnersList when page loads
+
+</script>
+</body>
+</html>

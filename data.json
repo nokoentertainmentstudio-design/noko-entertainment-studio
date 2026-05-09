@@ -1,0 +1,183 @@
+{
+  "hero": {
+    "videoPath": "/uploads/1778072000579-626582363.mp4",
+    "logoPath": "/uploads/1778072138421-561670001.jpeg"
+  },
+  "about": {
+    "imagePath": "/uploads/1778185402407-497336361.jpg",
+    "p1": "",
+    "p2": "",
+    "p3": "",
+    "s1": "100+",
+    "s2": "3+",
+    "s3": "9"
+  },
+  "internship": {
+    "imagePath": "/uploads/1778072280696-406456265.jpeg"
+  },
+  "services": {
+    "1778094543930": {
+      "name": "Game Development",
+      "tag": "Games",
+      "desc": "Our game development service covers the full production pipeline idea development, UI/UX design, programming, testing, and launch. We specialize in creating immersive and interactive games that are both entertaining and meaningful, tailored to your audience or brand.",
+      "price": "Custom Quote",
+      "ts": 1778094543752,
+      "imagePath": "/uploads/1778094543857-33942054.png"
+    },
+    "1778094985195": {
+      "name": "Comics & Storyboards",
+      "tag": "Comics & Storyboards",
+      "desc": "We create high-quality comics and detailed storyboards for films, animations, adverts, and games. Our service includes concept development, visual storytelling, scene planning, and character design to bring your ideas to life before production.",
+      "price": "Custom Quote",
+      "ts": 1778094985124,
+      "imagePath": "/uploads/1778094985133-948587450.png"
+    },
+    "1778096572521": {
+      "name": "Software Development",
+      "tag": "Software Development",
+      "desc": "Custom software development including websites, mobile apps, and systems. We create secure, scalable, and user-friendly solutions based on your requirements.",
+      "price": "Custom Quote",
+      "ts": 1778096572363,
+      "imagePath": "/uploads/1778096572458-676023405.png"
+    },
+    "1778101986775": {
+      "name": "Commercial Production",
+      "tag": "Commercial Production",
+      "desc": "Commercial video production including filming, editing, and green screen work. We create high-quality, engaging content tailored to your brand or message.",
+      "price": "Custom Quote",
+      "ts": 1778101986092,
+      "videoPath": "/uploads/1778101986193-57818808.mp4"
+    },
+    "1778102549016": {
+      "name": "Wedding Coverage",
+      "tag": "Wedding Coverage",
+      "desc": "Capture every special moment of your big day with our professional wedding coverage service. We provide high-quality photography and/or videography, ensuring that every smile, emotion, and detail is beautifully documented. Our team focuses on storytelling—preserving your memories from preparation, ceremony, and reception in a timeless and cinematic style.\n\nWhat does this service include?\n\nFull-day or half-day coverage options\nProfessional photographer and/or videographer\nHigh-resolution edited photos\nHighlight video (for video packages)\nCeremony and reception coverage\nCreative couple shoot session\nOnline gallery or digital delivery\nOptional extras: drone shots, same-day edit, photo album",
+      "price": "custom Quote",
+      "ts": 1778102548908,
+      "imagePath": "/uploads/1778102548958-371550439.png"
+    },
+    "1778158161063": {
+      "name": "2D Animation",
+      "tag": "Animation",
+      "desc": "Bring your ideas to life with high-quality 2D animation services. We create engaging animated videos for businesses, music videos, advertisements, educational content, social media, and storytelling.",
+      "price": "Custom Quote",
+      "ts": 1778158160293,
+      "videoPath": "/uploads/1778158160499-334606109.mp4"
+    },
+    "1778158337636": {
+      "name": "Podcast Shooting",
+      "tag": "Podcast Production",
+      "desc": "Create professional and engaging podcasts with our high-quality podcast shooting and production service.",
+      "price": "Custom Quote",
+      "ts": 1778158336697,
+      "videoPath": "/uploads/1778158336748-411659543.mp4"
+    },
+    "1778161640380": {
+      "name": "Event Coverage",
+      "tag": "Events",
+      "desc": "Capture every important moment with our professional event coverage services. We provide high-quality photography and videography for corporate events, birthdays, concerts, conferences, graduations, church events, and special occasions.",
+      "price": "Custom Quote",
+      "ts": 1778161639808,
+      "videoPath": "/uploads/1778161639876-259717047.mp4"
+    },
+    "1778162966949": {
+      "name": "Videography & Photography",
+      "tag": "Events",
+      "desc": "Capture life’s best moments with our professional videography and photography services. We provide creative visual storytelling for weddings, events, businesses, music videos, brands, and social media content.",
+      "price": "Custom Quote",
+      "ts": 1778162966107,
+      "videoPath": "/uploads/1778162966264-772617094.mp4"
+    }
+  },
+  "portfolio": {
+    "1778071808576": {
+      "title": "Musangwe",
+      "category": "Game Development",
+      "year": "2024",
+      "client": "",
+      "ts": 1778071808280,
+      "videoPath": "/uploads/1778071808313-145072435.mp4"
+    },
+    "1778093686677": {
+      "title": "Innovator Trust",
+      "category": "Event Coverage",
+      "year": "2025",
+      "client": "",
+      "ts": 1778093685638,
+      "videoPath": "/uploads/1778093685738-541092249.mp4"
+    },
+    "1778093926333": {
+      "title": "Commercial (Velvet Skin)",
+      "category": "Commercial Production",
+      "year": "2025",
+      "client": "",
+      "ts": 1778093925740,
+      "videoPath": "/uploads/1778093925759-132200508.mp4"
+    },
+    "1778093997093": {
+      "title": "Podcast Production",
+      "category": "Podcast Production",
+      "year": "2026",
+      "client": "",
+      "ts": 1778093996920,
+      "videoPath": "/uploads/1778093996944-746869807.mp4"
+    }
+  },
+  "news": {
+    "1778182945049": {
+      "title": "Noko Entertainment Studio Launches Grade 8 Maths Comic Book",
+      "exc": "Noko Entertainment Studio proudly introduces a Grade 8 Maths Comic Book designed to make algebra fun, engaging, and easier for students to understand.",
+      "body": "Noko Entertainment Studio is excited to officially launch the Grade 8 Maths Comic Book, an educational comic created to help students learn algebra through storytelling, adventure, and interactive learning.\n\nThe comic book takes learners through exciting episodes that simplify mathematical concepts such as two-step equations, multi-step equations, and real-world problem solving. By combining education with entertainment, the project aims to help students build confidence and enjoy mathematics in a fun and creative way.\n\nCreated under the slogan “Making Math Fun, One Equation at a Time,” the comic book reflects Noko Entertainment Studio’s commitment to innovative educational content for young learners.\n\nThe Grade 8 Maths Comic Book is now part of Noko Entertainment Studio’s growing collection of creative educational projects focused on inspiring students through modern storytelling and visual learning.",
+      "cat": "Announcement",
+      "auth": "Noko Entertainment Studio",
+      "stat": "published",
+      "date": "7 May 2026",
+      "ts": 1778182944666,
+      "imagePath": "/uploads/1778182944860-402016864.png"
+    },
+    "1778184448521": {
+      "title": "Noko Entertainment Studio Announces Upcoming Grade 12 Mathematics Comic Book",
+      "exc": "Noko Entertainment Studio is excited to announce the upcoming release of the Mathematics Masters Grade 12 Comic Book, launching on 1 June 2026 to help learners master advanced mathematics in a fun and engaging way.",
+      "body": "Noko Entertainment Studio is proud to officially announce the upcoming release of the Mathematics Masters Grade 12 Comic Book, set to launch on 1 June 2026. This exciting new educational comic is designed to help Grade 12 learners understand advanced mathematics through storytelling, creativity, and interactive visual learning.\n\nFollowing the success of the Grade 8 comic book series, this new edition takes learners deeper into important Grade 12 mathematics topics including calculus, algebra, trigonometry, statistics, vectors, and real-world applications. The comic combines entertainment with education to make learning more enjoyable, relatable, and easier to understand.\n\nThe Mathematics Masters Grade 12 Comic Book encourages learners to think critically, solve problems confidently, and build stronger mathematical skills while following fun and inspiring characters throughout their learning journey.\n\nCreated by Noko Entertainment Studio, the comic continues the mission of making education exciting for young learners through modern storytelling and engaging visuals. Learners can expect challenging problems, motivational lessons, and practical mathematical concepts presented in a unique comic-book style experience.\n\nThe countdown to launch day has officially begun. Get ready for a new level of mathematics learning on 1 June 2026",
+      "cat": "Announcement",
+      "auth": "Noko Entertainment Studio",
+      "stat": "published",
+      "date": "7 May 2026",
+      "ts": 1778184448062,
+      "imagePath": "/uploads/1778184448262-871807991.png"
+    }
+  },
+  "internships": {},
+  "partners": {
+    "1778144948058": {
+      "name": "BOB (Bring Own Bible)",
+      "website": "",
+      "logoPath": "/uploads/1778144947884-845484908.png",
+      "ts": 1778144948058
+    },
+    "1778145420623": {
+      "name": "Tshwane University Of Technology (TUT)",
+      "website": "",
+      "logoPath": "/uploads/1778145420618-614882550.png",
+      "ts": 1778145420623
+    },
+    "1778146062867": {
+      "name": "StudyFlix",
+      "website": "",
+      "logoPath": "/uploads/1778146062849-459441565.png",
+      "ts": 1778146062867
+    },
+    "1778146110952": {
+      "name": "NokoFM",
+      "website": "",
+      "logoPath": "/uploads/1778146110936-7208456.png",
+      "ts": 1778146110952
+    },
+    "1778146626514": {
+      "name": "EasyRes",
+      "website": "",
+      "logoPath": "/uploads/1778146626510-903854439.jpeg",
+      "ts": 1778146626514
+    }
+  }
+}
